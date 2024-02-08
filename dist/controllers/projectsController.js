@@ -8,13 +8,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.collaboratorRemove = exports.collaboratorAdd = exports.projectRemove = exports.projectUpdate = exports.proejectDetail = exports.projectStore = exports.projectsList = void 0;
+const Project_1 = __importDefault(require("../models/Project"));
 const projectsList = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const projects = yield Project_1.default.find().where("createdBy").equals(req.user);
         return res.status(200).json({
             ok: true,
-            msg: 'Lista de Proyectos'
+            msg: 'Lista de Proyectos',
+            data: projects
         });
     }
     catch (error) {

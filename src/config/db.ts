@@ -1,4 +1,4 @@
-import { set, connect, Error } from 'mongoose';
+import { set, connect } from 'mongoose';
 
 const connectDB = async () => { 
     try { 

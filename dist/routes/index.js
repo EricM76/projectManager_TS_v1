@@ -5,6 +5,7 @@ const authController_1 = require("../controllers/authController");
 const tasksController_1 = require("../controllers/tasksController");
 const usersController_1 = require("../controllers/usersController");
 const projectsController_1 = require("../controllers/projectsController");
+const middlewares_1 = require("../middlewares");
 const router = (0, express_1.Router)();
 /* AUTH */
 router
@@ -18,7 +19,7 @@ router
 /* PROYECTOS */
 router
     .route('/projects')
-    .get(projectsController_1.projectsList)
+    .get(middlewares_1.checkAuth, projectsController_1.projectsList)
     .post(projectsController_1.projectStore);
 router
     .route('/projects/:id')

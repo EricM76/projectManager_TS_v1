@@ -1,5 +1,6 @@
 import { compare, hash } from 'bcryptjs';
 import mongoose from 'mongoose';
+import { User } from '../middlewares';
 
 // Declare the Schema of the Mongo model
 var userSchema = new mongoose.Schema({

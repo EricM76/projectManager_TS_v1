@@ -10,6 +10,7 @@ const routes_1 = __importDefault(require("./routes"));
 const http_errors_1 = __importDefault(require("http-errors"));
 const app = (0, express_1.default)();
 (0, db_1.default)();
+app.use(express_1.default.json());
 app.use('/api', routes_1.default);
 app.use(function (req, res, next) {
     const err = (0, http_errors_1.default)(404, 'Not Found');

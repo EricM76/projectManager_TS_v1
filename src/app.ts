@@ -3,6 +3,7 @@ import express, {Express, NextFunction, Request, Response} from 'express';
 import connectDB from './config/db';
 import router from './routes';
 import createHttpError from 'http-errors';
+import { Types } from 'mongoose';
 
 interface ResponseError extends Error {
     status: number;
@@ -10,6 +11,8 @@ interface ResponseError extends Error {
 const app: Express = express();
 
 connectDB();
+
+app.use(express.json());
 
 app.use('/api',router);
 
