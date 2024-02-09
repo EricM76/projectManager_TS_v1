@@ -20,12 +20,12 @@ router
 router
   .route('/projects')
   .get(checkAuth, projectsList)
-  .post(projectStore)
+  .post(checkAuth, projectStore)
 router
   .route('/projects/:id')
-  .get(proejectDetail)
-  .put(projectUpdate)
-  .delete(projectRemove)
+  .get(checkAuth,proejectDetail)
+  .put(checkAuth,projectUpdate)
+  .delete(checkAuth,projectRemove)
 router
   .get('/collaborator', collaboratorAdd)
   .delete('/collaborator', collaboratorRemove)

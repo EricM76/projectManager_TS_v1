@@ -21,10 +21,11 @@ const checkAuth = (req, res, next) => __awaiter(void 0, void 0, void 0, function
     let token;
     if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
         try {
-            console.log(req.headers.authorization);
             token = req.headers.authorization.split(" ")[1];
             const decoded = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET);
             req.user = yield User_1.default.findById(decoded.id).select("-password -checked -token -createdAt -updatedAt -__v");
+            if (!req.user)
+                throw (0, http_errors_1.default)(401, "Usuario inválido");
         }
         catch (error) {
             return (0, helpers_1.errorResponse)(res, error, "VERIFY-JWT");

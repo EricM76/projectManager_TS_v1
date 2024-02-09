@@ -7,7 +7,7 @@ declare global {
   namespace Express {
     export interface Request {
       user: {
-        id? : Types.ObjectId
+        _id? : Types.ObjectId
       };
     }
   }

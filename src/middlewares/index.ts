@@ -11,18 +11,14 @@ export const checkAuth = async (req: Request, res: Response, next: NextFunction)
     if(req.headers.authorization && req.headers.authorization.startsWith("Bearer")){
         try {
 
-console.log(req.headers.authorization)
-
             token = req.headers.authorization.split(" ")[1];
             const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
 
             req.user = await User.findById((decoded as TokenInterface).id).select(
                     "-password -checked -token -createdAt -updatedAt -__v"
                   );
-                 
-
-
-            
+            if(!req.user) throw createHttpError(401, "Usuario inválido")
+                
         } catch (error) {
             return errorResponse(res, error, "VERIFY-JWT")
         }

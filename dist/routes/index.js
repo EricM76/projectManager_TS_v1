@@ -20,12 +20,12 @@ router
 router
     .route('/projects')
     .get(middlewares_1.checkAuth, projectsController_1.projectsList)
-    .post(projectsController_1.projectStore);
+    .post(middlewares_1.checkAuth, projectsController_1.projectStore);
 router
     .route('/projects/:id')
-    .get(projectsController_1.proejectDetail)
-    .put(projectsController_1.projectUpdate)
-    .delete(projectsController_1.projectRemove);
+    .get(middlewares_1.checkAuth, projectsController_1.proejectDetail)
+    .put(middlewares_1.checkAuth, projectsController_1.projectUpdate)
+    .delete(middlewares_1.checkAuth, projectsController_1.projectRemove);
 router
     .get('/collaborator', projectsController_1.collaboratorAdd)
     .delete('/collaborator', projectsController_1.collaboratorRemove);
