@@ -4,7 +4,6 @@ import { errorResponse, generateJWT, generateTokenRandom } from "../helpers";
 import User from "../models/User";
 import { compare } from "bcryptjs";
 
- 
 export const register = async (req : Request,res : Response) => { 
         try {
 
