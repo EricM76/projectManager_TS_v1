@@ -31,10 +31,14 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         user.token = (0, helpers_1.generateTokenRandom)();
         const userStore = yield user.save();
         //TODO: enviar el email de confirmación con el TOKEN
+        yield (0, helpers_1.confirmRegister)({
+            name: userStore.name,
+            email: userStore.email,
+            token: userStore.token
+        });
         return res.status(201).json({
             ok: true,
-            msg: 'Usuario Registrado',
-            data: userStore
+            msg: 'Recibirás un mail con las instrucciones para completar tu registro',
         });
     }
     catch (error) {

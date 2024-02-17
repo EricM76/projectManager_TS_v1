@@ -10,7 +10,7 @@ const routes_1 = __importDefault(require("./routes"));
 const http_errors_1 = __importDefault(require("http-errors"));
 const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
-const allowedOrigins = ['http://localhost:5173'];
+const allowedOrigins = ['http://localhost:5173', 'http://localhost:5174'];
 const options = {
     origin: allowedOrigins
 };

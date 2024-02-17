@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import createError from "http-errors";
-import { errorResponse, generateJWT, generateTokenRandom } from "../helpers";
+import { confirmRegister, errorResponse, generateJWT, generateTokenRandom } from "../helpers";
 import User from "../models/User";
 import { compare } from "bcryptjs";
 
@@ -20,12 +20,18 @@ if(!name || !email || !password) throw createError(400,"Todos los campos son obl
  user.token = generateTokenRandom();
 
  const userStore = await user.save();
+
  //TODO: enviar el email de confirmación con el TOKEN
+await confirmRegister({
+    name : userStore.name,
+    email : userStore.email,
+    token : userStore.token as string
+})
+
  
             return res.status(201).json({ 
                 ok : true, 
-                msg :'Usuario Registrado',
-                data : userStore
+                msg :'Recibirás un mail con las instrucciones para completar tu registro',
             }) 
         } catch (error) {                 
             

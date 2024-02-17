@@ -5,6 +5,7 @@ import { Login } from './pages/Login'
 import { NotFound } from './pages/NotFound'
 import { Register } from './pages/Register'
 import { ForgetPassword } from './pages/ForgetPassword'
+import { ConfirmAccount } from './pages/ConfirmAccount'
 
 function App() {
 
@@ -14,8 +15,10 @@ function App() {
       <Route path='/' element={<AuthLayout/>}>
           <Route index element={<Login/>}/>
           <Route path='/registrar' element={<Register/>}/>
-          <Route path='*' element={<NotFound/>}></Route>
+          <Route path='/confirmar/:token' element={<ConfirmAccount/>}/>
           <Route path='olvide-password' element={<ForgetPassword/>}/>
+          <Route path='*' element={<NotFound/>}></Route>
+
       </Route>
     </Routes>
   </AuthProvider>
