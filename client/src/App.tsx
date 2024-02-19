@@ -6,6 +6,11 @@ import { NotFound } from './pages/NotFound'
 import { Register } from './pages/Register'
 import { ForgetPassword } from './pages/ForgetPassword'
 import { ConfirmAccount } from './pages/ConfirmAccount'
+import ProtectedLayout from './layouts/ProtectedLayout'
+import Projects from './pages/Projects'
+import ProjectAdd from './pages/ProjectAdd'
+import Project from './pages/Project'
+import ProjectEdit from './pages/ProjectEdit'
 
 function App() {
 
@@ -18,6 +23,12 @@ function App() {
           <Route path='/confirmar/:token' element={<ConfirmAccount/>}/>
           <Route path='olvide-password' element={<ForgetPassword/>}/>
           <Route path='*' element={<NotFound/>}></Route>
+      </Route>
+      <Route path='/proyectos' element={<ProtectedLayout/>}>
+        <Route index element={<Projects/>}/>
+        <Route path='crear-proyecto' element={<ProjectAdd/>}/>
+        <Route path=':id' element={<Project/>}/>
+        <Route path='editar/:id' element={<ProjectEdit/>}/>
 
       </Route>
     </Routes>

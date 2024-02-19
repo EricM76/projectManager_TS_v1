@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from '../hooks/useForm';
 import { FormEvent } from 'react';
 import useAuth from '../hooks/useAuth';
@@ -14,7 +14,9 @@ export interface FormDataValues {
 
 export const Login = () => {
 
-    const {alert, handleShowAlert} = useAuth();
+
+    const navigate = useNavigate();
+    const {alert, handleShowAlert, setAuth} = useAuth();
 
     const {formValues, handleInputChange, reset} = useForm<FormDataValues>({
         email : "",
@@ -36,13 +38,15 @@ export const Login = () => {
 
         try {
 
-            const responseAxios = await clientAxios.post('/login', {
+            const {data} = await clientAxios.post('/login', {
                 email,
                 password
             })
 
-            console.log(responseAxios);
-            
+            localStorage.setItem('tokenPM',data.token);
+
+            setAuth(data.user)
+            navigate('/proyectos')
             
         } catch (error) {
 

@@ -43,5 +43,5 @@ router
     .post('/tast/:id/change-state', tasksController_1.taskChangeState);
 /* USUARIOS */
 router
-    .get('/', usersController_1.profile);
+    .get('/profile', middlewares_1.checkAuth, usersController_1.profile);
 exports.default = router;
