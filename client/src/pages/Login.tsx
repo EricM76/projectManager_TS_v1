@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from '../hooks/useForm';
 import { FormEvent } from 'react';
 import useAuth from '../hooks/useAuth';
@@ -14,6 +14,8 @@ export interface FormDataValues {
 
 export const Login = () => {
 
+
+    const navigate = useNavigate();
     const {alert, handleShowAlert, setAuth} = useAuth();
 
     const {formValues, handleInputChange, reset} = useForm<FormDataValues>({
@@ -41,13 +43,10 @@ export const Login = () => {
                 password
             })
 
-            localStorage.setItem('token', data.token)
-
-
-            //console.log(responseAxios);
+            localStorage.setItem('tokenPM',data.token);
 
             setAuth(data.user)
-            
+            navigate('/proyectos')
             
         } catch (error) {
 

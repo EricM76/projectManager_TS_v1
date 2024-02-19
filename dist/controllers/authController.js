@@ -63,6 +63,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             msg: 'Usuario Logueado',
             token: (0, helpers_1.generateJWT)({ id: user._id }),
             user: {
+                _id: user._id,
                 name: user.name,
                 email: user.email,
             }

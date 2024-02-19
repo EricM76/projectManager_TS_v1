@@ -45,7 +45,7 @@ router
 
 /* USUARIOS */
 router
-  .get('/users/profile',checkAuth, profile);
+  .get('/profile',checkAuth, profile);
 
 
 export default router;

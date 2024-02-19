@@ -1,10 +1,15 @@
 import { Link } from 'react-router-dom'
+import useAuth from '../hooks/useAuth'
 
 const Header = () => {
 
+    const {signOut}  = useAuth()
 
-    const handleCerrarSesion = () => {
-        localStorage.removeItem('token')
+
+    const handleSignOut = () => {
+
+        signOut();
+        localStorage.removeItem('tokenPM')
     }
 
 
@@ -28,7 +33,7 @@ const Header = () => {
                 <button
                     type="button"
                     className='text-white text-sm bg-sky-600 p-3 rounded-md uppercase font-bold'
-                    onClick={handleCerrarSesion}
+                    onClick={handleSignOut}
                 >Cerrar Sesión</button>
 
             </div>

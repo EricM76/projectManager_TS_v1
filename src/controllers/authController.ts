@@ -59,9 +59,10 @@ export const login = async (req : Request,res : Response) => {
                 msg :'Usuario Logueado',
                 token : generateJWT({ id: user._id }),
                 user : {
+                    _id :  user._id,
                     name : user.name,
                     email : user.email,
-                }
+                    }
                    
             }) 
         } catch (error) { 

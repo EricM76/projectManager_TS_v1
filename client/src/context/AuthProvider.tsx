@@ -1,31 +1,65 @@
 import { PropsWithChildren, createContext, useEffect, useState } from "react";
 import clientAxios from "../config/clientAxios";
 
-
-export interface Auth {
-    _id? : string;
-    name? : string;
-    email? : string;
+interface Auth {
+    _id? : string,
+    name? : string,
+    email? : string,
 }
 
 export interface AuthContextProps {
-    auth: Auth;
-    setAuth : React.Dispatch<React.SetStateAction<Auth>>;
+    auth : Auth;
+    setAuth : React.Dispatch<React.SetStateAction<Auth>>
     alert : {
         msg: string
     };
     handleShowAlert : (msg : string) => void;
     loading : boolean;
+    signOut: () => void;
 }
 
 const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
 
-
 const AuthProvider = ({children} : PropsWithChildren) => {
 
+    const [loading, setLoading] = useState(true)
+    const [auth, setAuth] = useState({});
     const [alert, setAlert] = useState({
         msg : ""
     });
+
+    useEffect(() => {
+
+        const signIn = async() => {
+            const token = localStorage.getItem('tokenPM');
+
+            if(!token){
+                setLoading(false);
+                return null
+            }
+
+            try {
+                const {data} = await clientAxios.get('/profile',{
+                    headers : {
+                        "Content-Type" : "application/json",
+                        Authorization : `Bearer ${token}`
+                    }
+                })
+
+                setAuth(data.user)
+                
+            } catch (error) {
+                console.log(error);
+                setAuth({})
+                
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        signIn()
+    
+    }, []);
 
     const handleShowAlert = (msg: string) => {
         setAlert({
@@ -39,39 +73,8 @@ const AuthProvider = ({children} : PropsWithChildren) => {
         },3000)
     };
 
-    const [auth, setAuth] = useState({});
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        const signIn = async () => {
-            const token = localStorage.getItem('token')
-            if(!token){
-                setLoading(false)
-                return
-            }
-
-            const config = {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`
-                }
-            }
-
-            try {
-                const { data } = await clientAxios('/users/profile', config)
-                console.log(data);
-                
-                setAuth(data.user)
-                // navigate('/proyectos')
-
-            } catch (error) {
-                setAuth({})
-            } 
-
-            setLoading(false)
-        }
-        signIn()
-    }, [])
+    const signOut = () => setAuth({})
+    
     
     return (
         <AuthContext.Provider
@@ -80,7 +83,8 @@ const AuthProvider = ({children} : PropsWithChildren) => {
                 setAuth,
                 alert,
                 handleShowAlert,
-                loading
+                loading,
+                signOut
             }}
         >
             {children}
