@@ -14,7 +14,8 @@ const profile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         return res.status(200).json({
             ok: true,
-            msg: 'Perfil de Usuario'
+            msg: 'Perfil de Usuario',
+            user: req.user
         });
     }
     catch (error) {

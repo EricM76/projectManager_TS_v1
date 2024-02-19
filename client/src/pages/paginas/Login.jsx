@@ -1,76 +1,56 @@
-import { Link } from 'react-router-dom'
-import { useForm } from '../hooks/useForm';
-import { FormEvent } from 'react';
+import { useState } from 'react'
+import { Link,  useNavigate } from 'react-router-dom'
+import Alerta from '../components/Alerta'
+import clienteAxios from '../config/clienteAxios'
 import useAuth from '../hooks/useAuth';
-import { Alert } from '../components/Alert';
-import axios from 'axios';
-import clientAxios from '../config/clientAxios';
 
-export interface FormDataValues {
-    email : string;
-    password : string;
-}
+const Login = () => {
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [alerta, setAlerta] = useState({})
 
+    const { setAuth } = useAuth();
 
-export const Login = () => {
+    const navigate = useNavigate()
 
-    const {alert, handleShowAlert, setAuth} = useAuth();
+    const handleSubmit = async e => {
+        e.preventDefault();
 
-    const {formValues, handleInputChange, reset} = useForm<FormDataValues>({
-        email : "",
-        password : "",
-    });
-
-    const {email, password} = formValues;
-
-
-    const handleSubmit = async (e: FormEvent) => {
-        e.preventDefault()
-
-        if ([email, password].includes("")) {
-            console.log(formValues);
-            
-            handleShowAlert("Todos los campos son obligatorios");
-            return null
+        if([email, password].includes('')) {
+            setAlerta({
+                msg: 'Todos los campos son obligatorios',
+                error: true
+            });
+            return
         }
+
+
 
         try {
-
-            const {data} = await clientAxios.post('/login', {
-                email,
-                password
-            })
-
+            const { data } = await clienteAxios.post('/usuarios/login', { email, password})
+            setAlerta({})
             localStorage.setItem('token', data.token)
-
-
-            //console.log(responseAxios);
-
-            setAuth(data.user)
-            
-            
+            setAuth(data)
+            navigate('/proyectos')
         } catch (error) {
-
-            console.log(error);
-            
-
-            handleShowAlert(axios.isAxiosError(error) ? error.response?.data.msg : error)
-
+            setAlerta({
+                msg: error.response.data.msg,
+                error: true
+            })
         }
 
-        reset()
-        
     }
 
-
+    const { msg } = alerta
 
   return (
     <>
-        <h1 className="text-sky-600 font-black text-6xl capitalize">Inicia <span className="text-slate-700">sesión</span>
+        <h1 className="text-sky-600 font-black text-6xl capitalize">Inicia sesión y administra tus {''}
+            <span className="text-slate-700">proyectos</span>
         </h1>
-        {
-        alert.msg && <Alert {...alert}/>
-    }
+
+        {msg && <Alerta alerta={alerta } />}
+    
         <form 
             className="my-10 bg-white shadow rounded-lg p-10"
             onSubmit={handleSubmit}
@@ -85,24 +65,22 @@ export const Login = () => {
                     type="email"
                     placeholder="Email de Registro"
                     className="w-full mt-3 p-3 border rounded-xl bg-gray-50"
-                    name='email'
                     value={email}
-                    onChange={handleInputChange}
+                    onChange={ e => setEmail(e.target.value)}
                 />
             </div>
             <div className="my-5">
                 <label 
                     className="uppercase text-gray-600 block text-xl font-bold"
                     htmlFor="password"
-                >Contraseña</label>
+                >Password</label>
                 <input
                     id="password"
                     type="password"
-                    placeholder="Contraseña de Registro"
+                    placeholder="Password de Registro"
                     className="w-full mt-3 p-3 border rounded-xl bg-gray-50"
-                    name='password'
                     value={password}
-                    onChange={handleInputChange}
+                    onChange={ e => setPassword(e.target.value)}
                 />
             </div>
 
@@ -127,6 +105,7 @@ export const Login = () => {
         </nav>
     
     </>
-
   )
 }
+
+export default Login
